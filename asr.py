@@ -72,7 +72,7 @@ print(f'VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB')
 ## A1. Dataset Preparation
 """
 
-pip install datasets==2.18.0
+pip install datasets == 3.3.2
 
 ds_test = load_dataset("fsicoli/common_voice_22_0", "az",  split = 'test', streaming = False, trust_remote_code=True)
 

@@ -1,0 +1,11 @@
+datasets == 3.3.2
+transformers
+accelerate
+jiwer
+soundfile
+librosa
+evaluate
+torch
+torchaudio
+numpy
+matplotlib

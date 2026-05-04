@@ -1,17 +1,25 @@
-# Azerbaijani Speech-to-Text (ASR) with Whisper
+# Azərbaycan dili üçün ASR sistemi
+---
 
-&gt; **Internship Project** — Fine-tuning OpenAI Whisper for Low-Resource Azerbaijani ASR  
-&gt; **Dataset:** Mozilla Common Voice 22.0 (Azerbaijani) | **Model:** `openai/whisper-small`
+## Layihə Haqqında
+
+Bu layihə aşağı resurslu, aqqlütinativ dil olan Azərbaycan dilində avtomatik nitq tanıma (ASR) sisteminin effektivliyini öyrənir. Əvvəlcə öncədən öyrədilmiş `whisper-small` modelinin zero-shot rejimində bazasını müəyyən edirik, sonra "common voice" datasetinin məhdud alt dəstində dekoderi fine-tuning edərək, data qıtlığına baxmayaraq, kiçik miqyaslı adaptasiyanın səhv dərəcələrini azalda biləcəyini qiymətləndiririk. Bununla yanaşı, Azərbaycan dili ASR üçün вэ unikal çətinliklər yaradır, məsələn, aqqlütinativ morfologiya çoxlu sayda şəkilçili söz formaları yaradır, fonetik olaraq oxşar samitlər asanlıqla qarışdırılır və açıq mənbəli audio data məhduddur.
 
 ---
 
-## Overview
+## Repozitoriya Strukturu
 
-This project investigates the effectiveness of transfer learning for Azerbaijani automatic speech recognition (ASR), a low-resource agglutinative language. We establish a baseline using the pre-trained `whisper-small` model in zero-shot mode, then fine-tune the decoder on a limited subset of Common Voice data to evaluate whether small-scale adaptation can reduce error rates despite severe data scarcity.
-
-Azerbaijani presents unique challenges for ASR: agglutinative morphology generates a vast vocabulary of inflected forms, phonetically similar consonants (e.g., *q* / *ğ*, *x* / *h*) are easily confused, and publicly available transcribed audio remains critically limited [^4^].
-
----
-
-## Repository Structure
+az-stt-intern/
+├── README.md                 # Bu fayl
+├── requirements.txt          # Python
+├── part_a/                   # Hissə A: Base inferens və qiymətləndirmə
+│   └── baseline_asr.ipynb
+├── part_b/                   # Hissə B: Fine-Tuning pipeline
+│   └── finetune_whisper.ipynb
+├── results/                  # WER/CER cədvəlləri, təlim əyriləri, müqayisə qrafikləri
+│   ├── wer_cer_comparison.png
+│   ├── training_progress.png
+│   ├── wer_distribution.png
+│   └── metrics.json
+└── report.pdf                # Hissə C: Analitik hesabat (Azərbaycan dilində)
 

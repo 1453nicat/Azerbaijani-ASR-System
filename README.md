@@ -78,16 +78,15 @@ az-stt-intern/
 
 ---
 
-## Quraşdırma və Yenidən İstehsal
+## Setup + run
 
-### 1. Mühit
+### 1. Environment
 
 ```bash
-# Repozitoriyanı klonlayın
 git clone https://github.com/yourusername/az-stt-intern.git
 cd az-stt-intern
 
-# Virtual mühit yaradın (tövsiyə olunur)
+# Virtual
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # venv\Scripts\activate   # Windows
@@ -96,10 +95,10 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### 2. Asılılıqlar (`requirements.txt`)
+### 2. Asılılıqlar
 
 ```
-datasets==2.18.0
+datasets==3.3.2
 transformers
 accelerate
 jiwer
@@ -121,41 +120,15 @@ matplotlib
 
 | Addım | Notebook | Təsvir |
 |-------|----------|--------|
-| **A** | `part_a/baseline_asr.ipynb` | Common Voice `az` test hissəsini yükləyin, zero-shot inferens aparın, WER/CER hesablayın, səhv paylanmalarını vizuallaşdırın. |
-| **B** | `part_b/finetune_whisper.ipynb` | Təlim/validasiya hissələrini hazırlayın, xüsusiyyət çıxarın və tokenləşdirin, dekoderi fine-tune edin, bazal model ilə müqayisə edin. |
+| **A** | `part_a/part_a.ipynb` | Common Voice `az` test hissəsini yükləyin, zero-shot inferens aparın, WER/CER hesablayın, səhv paylanmalarını vizuallaşdırın. |
+| **B** | `part_b/part_b.ipynb` | Təlim/validasiya hissələrini hazırlayın, xüsusiyyət çıxarın və tokenləşdirin, dekoderi fine-tune edin, bazal model ilə müqayisə edin. |
 | **C** | `report.pdf` | Texniki çətinliklər, dilçi çətinliklər və yaxşılaşdırma yol xəritəsini əhatə edən tam analitik hesabat (Azərbaycan dilində). |
 
 ---
 
-## Müzakirə və Məhdudiyyətlər
+## Məhdudiyyətlər
 
-- **Data Qıtlığı:** Common Voice 22.0-da təsdiqlənmiş Azərbaycan dili audio-su cəmi ~10 saat təşkil edir. Model bu həcmdə robust akustik və ya dilçi təmsil öyrənə bilmir. Bu əsas dar boğazdır.
+- **Data Qıtlığı:** Common Voice 22.0-da təsdiqlənmiş Azərbaycan dili audio-su cəmi ~10 saat təşkil edir. Model bu həcmdə robust akustik və ya dilçi təmsil öyrənə bilmir.
 - **Encoder Dondurulması:** Encoder-i dondurmaq VRAM istifadəsini azaltdı, lakin modelin akustik xüsusiyyətlərini Azərbaycan fonetikasına uyğunlaşdırmasının qarşısını aldı. Daha böyük datasetlərdə tam model fine-tuningi daha yaxşı nəticələr verə bilər.
-- **Aqqlütinativ Mürəkkəblik:** Azərbaycan dilinin zəngin morfoloji paradigmı təlim zamanı görülən effektiv lüğəti mümkün söz formalarının çox kiçik bir hissəsini əhatə edir, bu da yüksək OOV dərəcələrinə səbəb olur.
 
 ---
-
-## Gələcək İşlər
-
-1. **Dataseti Genişləndirmək:** Azərbaycan dilinə xas, müxtəlif sahə, vurğu və səs-küy şəraitlərini əhatə edən əlavə audio data toplamaq və ya annotasiya etmək (hədəf: 50+ saat).
-2. **Tam Model Fine-Tuningi:** Encoder-i açmaq və genişləndirilmiş datasetdə daha böyük variant (`whisper-medium` və ya `whisper-large`) üzərində tam fine-tuning aparmaq.
-3. **Qabaqcıl Texnikalar:** Parametr-səmərəli adaptasiya üçün LoRA/PEFT, data artırımı üçün SpecAugment və yaxşılaşdırılmış generasiya keyfiyyəti üçün beam-search dekodlaşdırma tətbiq etmək.
-
----
-
-## İstinadlar
-
-- Radford, A., et al. (2022). *Robust Speech Recognition via Large-Scale Weak Supervision.* OpenAI.
-- Mussakhojayeva, S., et al. (2023). *Multilingual Speech Recognition for Turkic Languages.* Information, 14(2), 74.
-- Common Voice Dataset: [Mozilla Common Voice](https://commonvoice.mozilla.org/)
-
----
-
-**Müəllif:** [Adınız Soyadınız]  
-**Rəhbər:** [Rəhbərin Adı Soyadı]  
-**Tarix:** May 2026
-```
-
----
-
-Bu versiyanı birbaşa `README.md` kimi istifadə edə bilərsiniz. Əgər istəsəniz, `requirements.txt` faylını da yaradıb sizə göndərə bilərəm.

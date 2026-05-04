@@ -20,7 +20,7 @@ az-stt-intern/
 ├── results/                  # WER/CER cədvəlləri, təlim əyriləri, müqayisə qrafikləri
 │   ├── wer_cer_comparison.png
 │   ├── training_progress.png
-│   ├── wer_distribution.png
+│   ├── wer_cer_last.png
 └── report.pdf                # Hissə C: Analitik hesabat (Azərbaycan dilində)
 ```
 
@@ -30,20 +30,20 @@ az-stt-intern/
 
 | Parametr | Dəyər |
 |----------|-------|
-| **Bazal Model** | `openai/whisper-small` (244M parametr) |
-| **Tapşırıq** | Şərtli Generasiya (Transkripsiya) |
+| **Base Model** | `openai/whisper-small`|
+| **Tapşırıq** | Transkripsiya |
 | **Dil** | Azərbaycan dili (`az`) |
-| **Diskretləşdirmə Tezliyi** | 16 kHz |
-| **Fine-Tuning Strategiyası** | Yalnız dekoder (encoder dondurulub) |
-| **Təlim Nümunələri** | 157 |
-| **Validasiya Nümunələri** | 50 |
-| **Test Nümunələri** | 100 |
-| **Epoch Sayı** | 5 |
-| **Batch Ölçüsü** | 8 per device (effektiv: 16 gradient toplama ilə) |
-| **Öyrənmə Sürəti** | 1×10⁻⁵ |
-| **Isınma Addımları** | 20 |
+| **Diskretləşdirmə tezliyi** | 16 kHz |
+| **Fine-Tuning strategiyası** | Yalnız dekoder (encoder dondurulub) |
+| **Təlim nümunələri** | 157 |
+| **Validasiya nümunələri** | 50 |
+| **Test nümunələri** | 100 |
+| **Epoch sayı** | 5 |
+| **Batch ölçüsü** | 8 per device (effektiv: 16 gradient toplama ilə) |
+| **Öyrənmə sürəti** | 1×10⁻⁵ |
+| **İsinmə addımları (warmup steps)** | 20 |
 | **Dəqiqlik** | FP16 |
-| **Gradient Checkpointing** | Aktiv |
+| **Gradient checkpointing** | Aktiv |
 | **Hardware** | NVIDIA Tesla T4 (15 GB VRAM) |
 
 ---
@@ -54,26 +54,25 @@ az-stt-intern/
 
 | Model | WER (%) | CER (%) | Δ WER | Δ CER |
 |-------|---------|---------|-------|-------|
-| **Bazal** (zero-shot) | 126,41 | 59,03 | — | — |
-| **Fine-Tuned** (yalnız dekoder, 5 epoch) | 100,78 | 138,44 | **+25,62** | −79,41 |
+| **Base** | 126,41 | 59,03 | — | — |
+| **Fine-Tuned** (5 epoch) | 100,78 | 138,44 | **+25,62** | −79,41 |
 
 *Aşağı dəyər daha yaxşıdır. Δ bazala nisbətən dəyişikliyi göstərir (müsbət = yaxşılaşma).*
 
 ### Əsas Nəticələr
 
-- **Bazal Performans:** Zero-shot model Azərbaycan dilində fəlakətli şəkildə uğursuz olur, xarici dillərdə (ərəb, koreya, ingilis) hallüsinasiyalar və mənasız simvol ardıcıllıqları yaradır. WER 100 %-dən yuxarıdır, çünki model referensdəkindən daha çox söz generasiya edir.
-- **Fine-Tuning Təsiri:** Yalnız 157 nümunədə dekoder fine-tuningi WER-i **25,62 faiz punkt** azaldır. Bu göstərir ki, hətta minimal həcmdə dilə xas data hallüsinasiyaları azalda və söz səviyyəsində tanımanı yaxşılaşdıra bilər.
-- **CER Regressiyası:** Simvol Səhv Dərəcəsi (CER) 59,03 %-dən 138,44 %-ə yüksəlir. Bu gözlənilməz nəticə fine-tuned modelin daha qısa, "azərbaycan dilinə daha oxşar" çıxışlar yaratdığını, lakin simvol səviyyəsində tez-tez səhv əvəzetmələr etdiyini göstərir — bu, məhdud data üzərində həddindən artıq uyğunlaşma (overfitting) və aqqlütinativ şəkilçilərlə mübarizənin nəticəsidir.
-- **Validasiya Dinamikası:** Ən yaxşı validasiya WER-i (~70,49 %) **2-ci epoch**-da əldə olunub; sonrakı epoch-larda overfitting əlamətləri müşahidə olunur. Bu, `load_best_model_at_end=True` parametri ilə modelin yalnız ən yaxşı epoch-un yadda saxlanmasını zəruri edir.
+- **Base performans:** Zero-shot model Azərbaycan dilində uğursuz olur, xarici dillərdə (ərəb, koreya, ingilis) hallüsinasiyalar və mənasız simvol ardıcıllıqları yaradır. WER 100%-dən yuxarıdır, çünki model referensdəkindən daha çox söz generasiya edir.
+- **Fine-Tuning təsiri:** Yalnız 157 nümunədə dekoder fine-tuningi WER-i **25,62 faiz punkt** azaldır. Bu göstərir ki, hətta minimal həcmdə dilə xas data hallüsinasiyaları azalda və söz səviyyəsində tanımanı yaxşılaşdıra bilər.
+- **CER regressiyası:** Simvol Səhv Dərəcəsi (CER) 59,03 %-dən 138,44 %-ə yüksəlir. Bu gözlənilməz nəticə fine-tuned modelin daha qısa, "azərbaycan dilinə daha oxşar" çıxışlar yaratdığını, lakin simvol səviyyəsində tez-tez səhv əvəzetmələr etdiyini göstərirş Bu, məhdud data üzərində həddindən artıq uyğunlaşma (overfitting) və aqqlütinativ şəkilçilərə görə ola bilər.
+- **Validasiya dinamikası:** Ən yaxşı validasiya WER-i (~70,49 %) **2-ci epoch**-da əldə olunub, sonrakı epoch-larda overfitting əlamətləri müşahidə olunur. Bu, `load_best_model_at_end = True` parametri ilə modelin yalnız ən yaxşı epoch-un yadda saxlanmasını vacib qılır.
 
 ### Səhv Analizi Xülasəsi
 
 | Səhv Tipi | Müşahidə |
 |-----------|----------|
-| **Hallüsinasiyalar** | Bazal model əlaqəsiz dillərdə bütün ifadələr generasiya edir; fine-tuned model azaldır, lakin tamamilə aradan qaldırmır. |
-| **Fonetik Qarışıqlıq** | Oxşar samitlər (*q* ↔ *ğ*, *x* ↔ *h*, *k* ↔ *c*) tez-tez yerinə yetirilir. |
+| **Hallüsinasiyalar** | Base model əlaqəsiz dillərdə ifadələr generasiya edir, fine-tuned model bunu azaldır, lakin tamamilə aradan qaldırmır. |
+| **Fonetik qarışıqlıq** | Oxşar samitlər (*q* ↔ *ğ*, *x* ↔ *h*, *k* ↔ *c*) tez-tez yerinə yetirilir. |
 | **Morfoloji** | Aqqlütinativ formalar (məsələn, *kitablarımdadır*) nadir hallarda düzgün transkripsiya olunur; model kök formalarına meyllənir. |
-| **OOV Sözlər** | Nadir və ya sahə-spesifik terminlər yüksək tezlikli yaxınlıqlarla əvəz olunur. |
 
 ---
 

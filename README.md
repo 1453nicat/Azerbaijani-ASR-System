@@ -1,0 +1,1 @@
+# Az-rbaycan-dili-n-nitq-tan-ma-sistemi

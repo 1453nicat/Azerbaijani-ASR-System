@@ -12,6 +12,8 @@ Bu layihə aşağı resurslu, aqqlütinativ dil olan Azərbaycan dilində avtoma
 ```
 az-stt-intern/
 ├── README.md                 # Bu fayl
+├── asr.jpynb                 # Tam proyekt kodu: .jpynb formatında
+├── asr.py                    # Tam proyekt kodu: .py formatında
 ├── requirements.txt          # Python
 ├── part_a/part_a.jpynb       # Hissə A: Base İnferens və qiymətləndirmə
 ├── part_b/part_b.jpynb       # Hissə B: Fine-Tuning pipeline
